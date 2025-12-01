@@ -281,3 +281,5 @@ pip install -r requirements.txt
 ## ⚠️ Disclaimer
 
 This tool is for personal use only. Please respect the terms of service of websites being scraped. Use appropriate rate limiting and delays to avoid overwhelming servers. Web scraping may be against some websites' terms of service - use at your own risk.
+
+![Screenshot](image.jpg)
