@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0a192f;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: #112240;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: auto;
+        }
+        input, button, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #233554;
+            color: white;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .price-alert {
+            background: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            color: black;
+        }
+        .loader {
+            display: none;
+            margin: 10px auto;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Car Price Tracker</h2>
+        <label for="phone">Enter your phone number:</label>
+        <input type="text" id="phone" placeholder="+91XXXXXXXXXX">
+        
+        <label for="carModel">Select Car Model:</label>
+        <select id="carModel" onchange="updatePriceField()">
+            <option value="">Select a Car</option>
+            <option value="Hyundai Creta">Hyundai Creta</option>
+            <option value="Maruti Swift">Maruti Swift</option>
+            <option value="Tata Nexon">Tata Nexon</option>
+        </select>
+        
+        <label for="targetPrice">Enter Target Price (₹):</label>
+        <input type="number" id="targetPrice" placeholder="Enter price in ₹">
+        
+        <button onclick="trackPrices()">Start Tracking</button>
+        
+        <div class="loader" id="loader"></div>
+        
+        <div id="priceAlert" class="price-alert"></div>
+    </div>
+
+    <script>
+        function updatePriceField() {
+            document.getElementById("targetPrice").value = "";
+        }
+
+        function trackPrices() {
+            let phone = document.getElementById("phone").value;
+            let carModel = document.getElementById("carModel").value;
+            let targetPrice = document.getElementById("targetPrice").value;
+            let loader = document.getElementById("loader");
+            
+            if (!phone || !carModel || !targetPrice) {
+                alert("Please fill all fields.");
+                return;
+            }
+            
+            loader.style.display = "block";
+            
+            fetch("/track-prices", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phone, carModel, targetPrice })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loader.style.display = "none";
+                if (data.alert) {
+                    document.getElementById("priceAlert").innerText = data.alert;
+                    document.getElementById("priceAlert").style.display = "block";
+                }
+            })
+            .catch(error => {
+                loader.style.display = "none";
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>
