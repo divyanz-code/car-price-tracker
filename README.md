@@ -1,4 +1,4 @@
-# 🚗 CodeCar Price Tracker
+# 🚗 Car Price Tracker
 
 A car price tracking web application built with Python Flask that monitors vehicle prices across multiple platforms and alerts users when prices drop or match their target budget.
 
