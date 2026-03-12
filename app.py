@@ -136,3 +136,4 @@ scheduler.add_job(track_car_prices, "interval", hours=24)
 if __name__ == "__main__":
     track_car_prices()  # Run once before starting the scheduler
     scheduler.start()
+
